@@ -17,11 +17,6 @@ function Events() {
      clearFilters
      } = useFilters(albums);
 
-     
-  console.log(albums);
-  console.log(filteredAlbums, 'filteredAlbums')
-
-
   const uniqueDates = Array.from(new Set(albums
     .map((album) => album.exifData.data)
     .filter((date) => date !== '')
@@ -38,6 +33,8 @@ function Events() {
   }
 
   const allTimeRanges = generateTimeRanges();
+
+  if(filteredAlbums.length === 0) return <h1>Carregando...</h1>
 
   return (
     <div>
@@ -63,9 +60,6 @@ function Events() {
       </select>
       <button onClick={applyFilter}>Aplicar Filtro</button>
       <button onClick={clearFilters}>Limpar Filtros</button>
-      {albums && (
-        <p>Nenhum álbum encontrado</p>
-      )}
       <ul>
         {filteredAlbums.map((album: imgProps) => (
           <li key={album.nome}>

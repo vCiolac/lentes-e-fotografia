@@ -12,6 +12,7 @@
   "dependencies": {
     "@firebase/storage": "^0.11.2",
     "@types/firebase": "^3.2.1",
+    "compressorjs": "^1.2.1",
     "firebase": "^10.4.0",
     "googleapis": "^126.0.1",
     "react": "^18.2.0",
