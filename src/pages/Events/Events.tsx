@@ -32,9 +32,9 @@ function Events() {
     return timeRanges;
   }
 
-  const allTimeRanges = generateTimeRanges();
+  console.log(filteredAlbums);
 
-  if(filteredAlbums.length === 0) return <h1>Carregando...</h1>
+  const allTimeRanges = generateTimeRanges();
 
   return (
     <div>
@@ -60,6 +60,7 @@ function Events() {
       </select>
       <button onClick={applyFilter}>Aplicar Filtro</button>
       <button onClick={clearFilters}>Limpar Filtros</button>
+      {filteredAlbums.length === 0 && <p>Nenhuma imagem encontrado</p>}
       <ul>
         {filteredAlbums.map((album: imgProps) => (
           <li key={album.nome}>

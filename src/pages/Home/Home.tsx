@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import useEvents from '../../hooks/fetchAlbums';
+import FetchAlbums from '../../hooks/fetchAlbums';
 
 function Home() {
-  const { albums, loading } = useEvents(); 
+  const { albums, loading } = FetchAlbums(); 
   
   return (
     <div>

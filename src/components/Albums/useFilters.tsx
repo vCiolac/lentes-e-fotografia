@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { imgProps } from '../../types';
 
 export function useFilters(albums: imgProps[]) {
@@ -6,11 +6,7 @@ export function useFilters(albums: imgProps[]) {
   const [filterTimeRange, setFilterTimeRange] = useState<string>('');
   const [filteredAlbums, setFilteredAlbums] = useState<imgProps[]>([]);
 
-  useEffect(() => {
-    applyFilter();
-  }, [filterDate, filterTimeRange, albums]);
-
-  const applyFilter = () => {
+  const applyFilter = useCallback(() => {
     let filtered = albums;
 
     // Filtrar por data
@@ -35,7 +31,11 @@ export function useFilters(albums: imgProps[]) {
       });
     }
     setFilteredAlbums(filtered);
-  };
+  }, [albums, filterDate, filterTimeRange]);
+
+  useEffect(() => {
+    applyFilter();
+  }, [applyFilter]);
 
   const clearFilters = () => {
     setFilterDate('');

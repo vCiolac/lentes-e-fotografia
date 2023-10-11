@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { storage } from '../services/firebase';
 import { ref, listAll } from 'firebase/storage'; 
 
-const fetchAlbums = async () => {
+const albumsData = async () => {
   const albumsRef = ref(storage, 'eventos');
 
   try {
@@ -14,14 +14,14 @@ const fetchAlbums = async () => {
   }
 };
 
-const useEvents = () => {
+const FetchAlbums = () => {
   const [albums, setAlbums] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadAlbums() {
       try {
-        const albumList = await fetchAlbums();
+        const albumList = await albumsData();
         setAlbums(albumList);
         setLoading(false);
       } catch (error) {
@@ -36,4 +36,4 @@ const useEvents = () => {
   return { albums, loading };
 };
 
-export default useEvents;
+export default FetchAlbums;

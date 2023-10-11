@@ -10,7 +10,6 @@ export async function fetchImagesByAlbum(albumId: string | undefined) {
   const festivalRef = ref(storage, path);
 
   try {
-    console.log('fetchImagesByAlbum', festivalRef)
     const result = await listAll(festivalRef);
     const files = await Promise.all(
       result.items.map(async (itemRef) => {
