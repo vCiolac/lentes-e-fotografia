@@ -1,13 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Compressor from 'compressorjs';
+import { Context } from '../../../context/Context';
 
 interface CompressImgProps {
   files: File[];
+  albumName: string;
   onCompressed: (compressedFiles: File[]) => void;
 }
 
-const CompressImg: React.FC<CompressImgProps> = ({ files, onCompressed }) => {
+const CompressImg: React.FC<CompressImgProps> = ({ files, albumName,  onCompressed }) => {
+  const { setErrorMsg } = useContext(Context);
+
   useEffect(() => {
+  if (!files.length) return;
+  if(albumName === '') return setErrorMsg('Nome do álbum não pode ser vazio!');
     const compressedFiles: File[] = [];
 
     // Função para lidar com o resultado da compressão

@@ -1,8 +1,9 @@
-import { Fragment, useContext, useState } from 'react';
-import uploadImagesWithMetadata from './uploadImagesWithMetadata';
+import { useContext, useState } from 'react';
 import { Context } from '../../context/Context';
 import ErrorMessage from '../Error/errorMsg';
 import CompressImg from './CompressImg/CompressImg';
+import uploadMetadados from './CompressImg/processExif';
+import uploadImages from './uploadImages';
 
 const UploadImageForm = () => {
   const [files, setFiles] = useState<File[]>([]);
@@ -26,7 +27,8 @@ const UploadImageForm = () => {
   const handleCompressedFiles = async (compressedFiles: File[]) => {
     setIsUploading(true);
     try {
-      await uploadImagesWithMetadata(compressedFiles, albumName);
+      await uploadMetadados(files, albumName);
+      await uploadImages(compressedFiles, albumName);
       setIsUploading(false);
       setErrorMsg('Imagens enviadas com sucesso!');
       setFiles([]);
@@ -55,7 +57,7 @@ const UploadImageForm = () => {
       <label htmlFor="file-input" style={{ cursor: 'pointer' }}>
         Selecionar Imagens
       </label>
-      <button onClick={() => setFiles([])}>Limpar Seleção</button>
+      <button onClick={() => setFiles([])}>Limpar seleção</button>
       {files.length > 0 &&
         <div>
           <h3>Imagens Selecionadas</h3>
@@ -66,12 +68,9 @@ const UploadImageForm = () => {
           </ul>
         </div>
       }
-      <button onClick={() => handleCompressedFiles(files)} disabled={!files.length || !albumName}>
-        Enviar Imagens
-      </button>
       {isUploading && <p>Enviando imagens...</p>}
       {errorMsg && <ErrorMessage message={errorMsg} /> }
-      <CompressImg files={files} onCompressed={handleCompressedFiles} />
+      <CompressImg files={files} albumName={albumName} onCompressed={handleCompressedFiles} />
     </div>
   );
 };
