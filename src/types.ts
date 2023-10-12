@@ -15,3 +15,8 @@ export type imgProps = {
 export type ErrorMessageProps = {
   message: string;
 };
+
+export interface AlbumData {
+  name: string;
+  coverUrl: string;
+}

@@ -17,8 +17,8 @@ const saveExifData = async (tags: number | undefined, imageName: string, aName: 
       data = `${dia}/${mes}/${ano}`;
       horario = `${hora}:${minutos}:${segundos}`;
     }
-
     const albumName = `eventos/${aName}/`;
+
     // Crie um documento no Firestore para armazenar as informações EXIF associadas ao ID da imagem
     const docRef = await addDoc(exifCollection, {
       imageName,

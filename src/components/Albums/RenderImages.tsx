@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { fetchImagesByAlbum } from '../../hooks/fetchImagesByAlbum';
 import { imgProps } from '../../types';
 
-export function useAlbums(albumname: string | undefined) {
+export function RenderImages(albumname: string | undefined) {
   const [albums, setAlbums] = useState<imgProps[]>([]);
 
   useEffect(() => {
