@@ -1,6 +1,6 @@
 import { ExifData } from "ts-exif-parser";
-import { extractExifData } from "../../../hooks/extractExifData";
-import { saveExifData } from "../../../hooks/saveExifData";
+import { extractExifData } from "../extractExifData";
+import { saveExifData } from "../saveExifData";
 
 const uploadMetadados = async (files: File[], albumName: string): Promise<void> => {
   for (const file of files) {

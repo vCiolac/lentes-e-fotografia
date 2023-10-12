@@ -1,22 +1,44 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { imgProps } from '../../types';
 import { useFilters } from '../../components/Albums/useFilters';
 import { RenderImages } from '../../components/Albums/RenderImages';
+import { setAlbumCover } from '../../hooks/changeAlbumCover';
+import { Context } from '../../context/Context';
+import Notification from '../../components/Notification/Notification';
 
 function Events() {
   const { albumname } = useParams();
   const { albums } = RenderImages(albumname);
-  const { 
-    filterDate, 
-    setFilterDate, 
-    filterTimeRange, 
+  const {
+    filterDate,
+    setFilterDate,
+    filterTimeRange,
     setFilterTimeRange,
-     filteredAlbums, 
-     applyFilter, 
-     clearFilters
-     } = useFilters(albums);
+    filteredAlbums,
+    applyFilter,
+    clearFilters
+  } = useFilters(albums);
+  const [isCoverSelectionOpen, setIsCoverSelectionOpen] = useState(false);
+  const [selectedCover, setSelectedCover] = useState<string>('');
+  const { message, showNotification } = useContext(Context);
 
+  const handleOpenCoverSelection = () => {
+    setIsCoverSelectionOpen(true);
+  };
+
+  const handleCoverSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCover(e.target.value);
+  };  
+
+  const handleSaveCover = async () => {
+    if (selectedCover !== '') {
+      const message = await setAlbumCover(albumname, selectedCover);
+      setIsCoverSelectionOpen(false); 
+      showNotification(message);
+    }
+  };
+  
   const uniqueDates = Array.from(new Set(albums
     .map((album) => album.exifData.data)
     .filter((date) => date !== '')
@@ -32,13 +54,26 @@ function Events() {
     return timeRanges;
   }
 
-  console.log(filteredAlbums);
-
   const allTimeRanges = generateTimeRanges();
 
   return (
     <div>
       <h1>Álbuns</h1>
+      <button onClick={handleOpenCoverSelection}>Trocar Capa do Álbum</button>
+      {isCoverSelectionOpen && (
+        <div>
+          <select value={selectedCover} onChange={handleCoverSelection}>
+            <option value="">Escolha uma capa</option>
+            {albums.map((album) => (
+              <option key={album.nome} value={album.url}>
+                {album.nome}
+              </option>
+            ))}
+          </select>
+          <button onClick={handleSaveCover}>Salvar Capa</button>
+        </div>
+      )}
+
       <select value={filterDate} onChange={(e) => setFilterDate(e.target.value)}>
         <option value="">Selecione o dia</option>
         {uniqueDates.map((date) => (
@@ -74,6 +109,7 @@ function Events() {
           </li>
         ))}
       </ul>
+      {message && <Notification message={message} />}
     </div>
   );
 }

@@ -8,15 +8,14 @@ type ProviderProps = {
 
 function Provider({ children }: ProviderProps) {
   const [user, setUser] = useState<User>({} as User);
-  const [errorMsg, setErrorMsg] = useState('');
-
+  const [message, showNotification] = useState('');
 
   return (
     <Context.Provider value={{
       user,
       setUser,
-      errorMsg,
-      setErrorMsg,
+      message,
+      showNotification,
     }}>
       {children}
     </Context.Provider>

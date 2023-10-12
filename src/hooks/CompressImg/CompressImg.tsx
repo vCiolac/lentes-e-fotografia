@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import Compressor from 'compressorjs';
-import { Context } from '../../../context/Context';
+import { Context } from '../../context/Context';
 
 interface CompressImgProps {
   files: File[];
@@ -9,20 +9,17 @@ interface CompressImgProps {
 }
 
 const CompressImg: React.FC<CompressImgProps> = ({ files, albumName,  onCompressed }) => {
-  const { setErrorMsg } = useContext(Context);
+  const { showNotification } = useContext(Context);
 
   useEffect(() => {
   if (!files.length) return;
-  if(albumName === '') return setErrorMsg('Nome do álbum não pode ser vazio!');
+  if(albumName === '') return showNotification('Nome do álbum não pode ser vazio!');
     const compressedFiles: File[] = [];
 
-    // Função para lidar com o resultado da compressão
     const handleCompression = (result: File) => {
       compressedFiles.push(result);
 
-      // Verifica se todas as imagens foram comprimidas
       if (compressedFiles.length === files.length) {
-        // Todas as imagens foram comprimidas, chama a função de retorno
         onCompressed(compressedFiles);
       }
     };
@@ -30,7 +27,7 @@ const CompressImg: React.FC<CompressImgProps> = ({ files, albumName,  onCompress
     // Realiza a compressão para cada arquivo
     files.forEach((file) => {
       new Compressor(file, {
-        quality: 0.2, // Configuração de qualidade
+        quality: 0.3, // Configuração de qualidade
         maxWidth: 640, // Largura máxima
         maxHeight: 480, // Altura máxima
         success: handleCompression, // Função a ser chamada após a compressão
@@ -39,7 +36,6 @@ const CompressImg: React.FC<CompressImgProps> = ({ files, albumName,  onCompress
     });
   }, [files, onCompressed]);
 
-  // Este componente não renderiza nada, pois lida com a lógica de compressão em segundo plano
   return null;
 };
 
