@@ -1,5 +1,4 @@
 import React, { Fragment, useContext, useEffect, useState } from 'react';
-import './styles.css';
 import { HandleGoogleLogin } from '../../utils/googleAuth';
 import { Context } from '../../context/Context';
 import ImageUploader from '../../components/UploadImages/imageUploader';

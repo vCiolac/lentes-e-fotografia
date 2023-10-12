@@ -1,12 +1,12 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { imgProps } from '../../types';
-import { useAlbums } from '../../components/Albums/useAlbums';
 import { useFilters } from '../../components/Albums/useFilters';
+import { RenderImages } from '../../components/Albums/RenderImages';
 
 function Events() {
   const { albumname } = useParams();
-  const { albums } = useAlbums(albumname);
+  const { albums } = RenderImages(albumname);
   const { 
     filterDate, 
     setFilterDate, 
