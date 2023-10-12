@@ -13,7 +13,7 @@ function Home() {
       <Header />
       <div className="container mx-auto pb-8">
         {loading ? (
-          <LoadingSpinner />
+          <LoadingSpinner msg='Carregando...'/>
         ) : (
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-10 justify-items-center mx-10">
             {albums.map((albumName) => (

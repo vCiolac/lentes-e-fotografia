@@ -1,5 +1,4 @@
 import { useContext, useState } from 'react';
-import CompressImg from '../../hooks/CompressImg/CompressImg';
 import uploadMetadados from '../../hooks/CompressImg/processExif';
 import uploadImages from '../../hooks/CompressImg/uploadImages';
 import FetchAlbums from '../../hooks/fetchAlbums';
@@ -7,8 +6,11 @@ import Notification from '../Notification/Notification';
 import { Context } from '../../context/Context';
 import { sanitizeAlbumName } from '../../hooks/handleAlbumName';
 import { Link } from 'react-router-dom';
+import LoadingSpinner from '../Loading/Loading';
+import CompressImg from '../../hooks/CompressImg/CompressImg';
 
 const UploadImageForm = () => {
+  const [filesForUpload, setFilesForUpload] = useState<File[]>([]);
   const [filesForCompress, setFilesForCompress] = useState<File[]>([]);
   const [albumName, setAlbumName] = useState('');
   const [isUploading, setIsUploading] = useState(false);
@@ -29,17 +31,30 @@ const UploadImageForm = () => {
 
   const handleUseExistingAlbum = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
-    setIsCreatingAlbum(false);
     setAlbumName(e.target.value)
+    setIsCreatingAlbum(false);
   };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = e.target.files;
     if (selectedFiles) {
       const filesArray = Array.from(selectedFiles);
-      setFilesForCompress(filesArray);
-      handleMetadados(filesArray);
+      setFilesForUpload(filesArray);
     }
+  };
+
+  const handleButtonUpload = async () => {
+    if (filesForUpload.length === 0) {
+      return showNotification('Nenhuma imagem selecionada!');
+    }
+    if (albumName === '') {
+      return showNotification('Nome do evento não pode ser vazio!');
+    }
+    if (isCreatingAlbum && albumName.length < 1) {
+      return showNotification('Escolha um evento disponível!');
+    }
+    handleMetadados(filesForUpload);
+    handleStartUpload(filesForUpload);
   };
 
   const handleMetadados = async (metadados: File[]) => {
@@ -47,10 +62,18 @@ const UploadImageForm = () => {
     await uploadMetadados(metadados, name);
   }
 
-  const handleCompressedFiles = async (compressedFiles: File[]) => {
-    if (isCreatingAlbum && albumName === '') {
-      return showNotification('Nome do álbum não pode ser vazio!');
+  const handleStartUpload = async (files: File[]) => {
+    try {
+      setFilesForCompress(files);
+      setFilesForUpload([]);
+    } catch (error: unknown) {
+      showNotification(`Erro: ${(error as Error).message}`);
+      setFilesForCompress([]);
+      setFilesForUpload([]);
     }
+  };
+
+  const handleCompressedFiles = async (compressedFiles: File[]) => {
     setIsUploading(true);
     try {
       const name = sanitizeAlbumName(albumName);
@@ -58,14 +81,18 @@ const UploadImageForm = () => {
       setIsUploading(false);
       showNotification('Imagens enviadas com sucesso!');
       setFilesForCompress([]);
-
     } catch (error: unknown) {
       setIsUploading(false);
       showNotification(`Erro ao enviar imagens: ${(error as Error).message}`);
       setFilesForCompress([]);
-
     }
   };
+
+  const clearAll = () => {
+    setAlbumName('');
+    setFilesForCompress([]);
+    setFilesForUpload([]);
+  }
 
   return (
     <div className="bg-white p-6 rounded shadow-md">
@@ -120,21 +147,26 @@ const UploadImageForm = () => {
         Selecionar Imagens
       </label>
       <button
-        onClick={() => setFilesForCompress([])}
+        onClick={clearAll}
         className="mt-4 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-full block w-max mx-auto"
       >
-        Limpar seleção
+        Limpar
       </button>
-      {filesForCompress.length > 0 && (
+      {filesForUpload.length > 0 && (
+        <div className="flex justify-center">
         <div className="mt-4">
           <h3 className="text-lg font-semibold mb-2">Imagens Selecionadas</h3>
           <ul className="list-disc pl-6">
-            {filesForCompress.map((file, index) => (
+            {filesForUpload.map((file, index) => (
               <li key={index}>{file.name}</li>
             ))}
           </ul>
         </div>
+        </div>
       )}
+      <button onClick={handleButtonUpload} className="mt-4 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full block w-max mx-auto">
+        Enviar Imagens
+      </button>
       <Link to={`/`}>
         <div className="flex justify-center">
           <button className="bg-gray-500 hover:bg-gray-600 text-white mt-4 font-semibold py-2 px-4 rounded-full">
@@ -143,10 +175,10 @@ const UploadImageForm = () => {
         </div>
       </Link>
       {isUploading && (
-        <p className="mt-4 font-semibold">Enviando imagens...</p>
+          <LoadingSpinner msg='Enviando imagens para o servidor...'/>
       )}
       {message && <Notification message={message} />}
-      <CompressImg files={filesForCompress} albumName={albumName} onCompressed={handleCompressedFiles} />
+      <CompressImg files={filesForCompress} onCompressed={handleCompressedFiles} />
     </div>
   );
 };

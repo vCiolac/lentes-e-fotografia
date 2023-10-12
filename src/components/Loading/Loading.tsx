@@ -1,6 +1,6 @@
 import React from 'react';
 
-function LoadingSpinner() {
+function LoadingSpinner({ msg }: { msg: string }) {
   return (
     <div className="flex items-center justify-center h-32">
       <div className="animate-spin mr-2">
@@ -25,7 +25,7 @@ function LoadingSpinner() {
           ></path>
         </svg>
       </div>
-      <p>Carregando...</p>
+      <p>{msg}</p>
     </div>
   );
 }
