@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import FetchAlbums from '../../hooks/fetchAlbums';
 import Header from '../../components/Header/Header';

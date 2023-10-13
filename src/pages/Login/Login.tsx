@@ -1,26 +1,10 @@
-import React, { useContext } from 'react';
+import  { useContext } from 'react';
 import { HandleGoogleLogin } from '../../utils/googleAuth';
 import { Context } from '../../context/Context';
 import ImageUploader from '../../components/UploadImages/imageUploader';
 
 function Login() {
   const { user, setUser } = useContext(Context);
-  // const [canEdit, setEditor] = useState(false);
-
-  // useEffect(() => {
-  //   const checkAdminStatus = async () => {
-  //     if (user && user.uid == import.meta.env.VITE_REACT_APP_ADMIN_UID) {
-  //       const userDocRef = doc(database, 'users', user.uid);
-  //       const userDocSnapshot = await getDoc(userDocRef);
-  //       if (userDocSnapshot.exists()) {
-  //         const userData = userDocSnapshot.data();
-  //         setEditor(userData.admin || false);
-  //       }
-  //     }
-  //   };
-
-  //   checkAdminStatus();
-  // }, [user]);
 
   const googleLogin = async () => {
     await HandleGoogleLogin({

@@ -14,10 +14,10 @@ export function RenderImages(albumname: string | undefined) {
         fullPath: album.fullPath,
         url: album.url,
         exifData: {
-          data: album.exifData.data || '',
-          imageName: album.exifData.imageName || '',
-          albumName: album.exifData.albumName || '',
-          horario: album.exifData.horario || '',
+          data: album.exifData?.data || '',
+          imageName: album.exifData?.imageName || '',
+          albumName: album.exifData?.albumName || '',
+          horario: album.exifData?.horario || '',
         },
       }));
       setAlbums(formattedImages);

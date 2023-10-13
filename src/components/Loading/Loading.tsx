@@ -1,5 +1,3 @@
-import React from 'react';
-
 function LoadingSpinner({ msg }: { msg: string }) {
   return (
     <div className="flex items-center justify-center h-32">
