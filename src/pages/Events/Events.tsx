@@ -56,17 +56,27 @@ function Events() {
     .filter((date) => date !== '')
   ));
 
-  function generateTimeRanges() {
-    const timeRanges = [];
-    for (let hour = 0; hour < 24; hour++) {
-      const startHour = `${hour.toString().padStart(2, '0')}:00:00`;
-      const endHour = `${(hour + 1).toString().padStart(2, '0')}:00:00`;
-      timeRanges.push(`${startHour}~${endHour}`);
-    }
-    return timeRanges;
-  }
+  // function generateTimeRanges() {
+  //   const timeRanges = [];
+  //   for (let hour = 0; hour < 24; hour++) {
+  //     const startHour = `${hour.toString().padStart(2, '0')}:00:00`;
+  //     const endHour = `${(hour + 1).toString().padStart(2, '0')}:00:00`;
+  //     timeRanges.push(`${startHour}~${endHour}`);
+  //   }
+  //   return timeRanges;
+  // }
 
-  const allTimeRanges = generateTimeRanges();
+  const allTimeRanges = albums
+  .map((album) => album.exifData.horario)
+  .filter((horario) => horario !== '')
+  .sort();
+
+  // const allTimeRanges = new Set(albums
+  //   .map((album) => album.exifData.horario)
+  //   .filter((horario) => horario !== '')
+  //   .sort();
+  // );
+
   const tittle = albumname ? formatAlbumName(albumname) : '';
   const eventCover = () => {
     if (albumname) {
