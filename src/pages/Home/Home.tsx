@@ -21,7 +21,7 @@ function Home() {
           <LoadingSpinner msg='Carregando...' />
         ) : (
           <div>
-            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-10 justify-items-center mx-10">
+            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-10 justify-items-center mx-1">
               {albums.map((albumName) => (
                 <li key={albumName} className="bg-white p-2 rounded shadow w-full relative group">
                   {/* <li key={albumName} className="bg-white p-2 rounded shadow w-[22rem] md:w-96 relative group"> */}
