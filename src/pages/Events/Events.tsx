@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useFilters } from '../../components/Albums/useFilters';
 import { RenderImages } from '../../components/Albums/RenderImages';
 import { setAlbumCover } from '../../hooks/changeAlbumCover';
@@ -8,6 +8,7 @@ import Notification from '../../components/Notification/Notification';
 import { formatAlbumName } from '../../hooks/handleAlbumName';
 import Footer from '../../components/Footer/Footer';
 import { Album } from '../../types';
+import LoadingSpinner from '../../components/Loading/Loading';
 
 function Events() {
   const { albumname } = useParams();
@@ -81,6 +82,7 @@ function Events() {
     return (
       <main className='w-full'>
         <header className="flex-col self-stretch relative flex w-full max-md:max-w-full">
+          <Link to="/" >
           <img
             loading="lazy"
             srcSet={headerImg}
@@ -90,6 +92,7 @@ function Events() {
           <div className="relative text-white text-3xl font-semibold uppercase self-stretch items-center w-full mt-32 pt-6 pb-2 px-5 max-md:max-w-full max-md:pl-2.5">
             {tittle}
           </div>
+          </Link>
         </header>
         {user && user.uid === import.meta.env.VITE_REACT_APP_ADMIN_UID && (
           <div className='flex flex-col'>
@@ -159,7 +162,7 @@ function Events() {
             {/* <button className="bg-red-400 hover:bg-red-500 rounded-lg px-3 py-1 shadow font-opens-sans" onClick={clearFilters}>Limpar Filtros</button> */}
           </div>
         </div>
-        {filteredAlbums.length === 0 && <p>Nenhuma imagem encontrado</p>}
+        {filteredAlbums.length === 0 && <LoadingSpinner msg='Carregando imagens...' />}
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mb-10 justify-items-center mx-10">
           {filteredAlbums.map((album) => (
             <li key={album.nome} className="bg-white p-2 rounded shadow w-full relative group">
