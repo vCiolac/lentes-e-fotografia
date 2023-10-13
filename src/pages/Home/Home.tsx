@@ -14,7 +14,7 @@ function Home() {
   return (
     <div className='min-h-screen relative'>
       <Header />
-      <div className="container mx-auto pb-8">
+      <div className="container mx-auto">
         {loading ? (
           <LoadingSpinner msg='Carregando...' />
         ) : (

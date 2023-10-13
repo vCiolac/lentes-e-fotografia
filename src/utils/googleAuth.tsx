@@ -1,6 +1,6 @@
 import { GoogleAuthProvider, User, signInWithPopup } from "firebase/auth";
 import { auth, database } from "../services/firebase";
-import { doc, setDoc, getDoc,  } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 export type Context = {
   setUser: React.Dispatch<React.SetStateAction<User>>;
