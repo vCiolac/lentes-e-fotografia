@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import FetchAlbums from '../../hooks/fetchAlbums';
 import Header from '../../components/Header/Header';
 import { formatAlbumName } from '../../hooks/handleAlbumName';
 import LoadingSpinner from '../../components/Loading/Loading';
+import Footer from '../../components/Footer/Footer';
+import { Context } from '../../context/Context';
 
 function Home() {
-  const { albums, albumCovers, loading } = FetchAlbums();
+  const { albums, loading } = FetchAlbums();
+  const { albumCovers } = useContext(Context);
 
   return (
     <div className='min-h-screen relative'>
@@ -39,7 +42,7 @@ function Home() {
           </ul>
         )}
       </div>
-      <div className="bg-[#3091A8] h-10 w-full absolute bottom-0"></div>
+      <Footer/>
     </div>
   );
 }

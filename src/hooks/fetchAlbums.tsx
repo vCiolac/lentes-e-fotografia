@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { database, storage } from '../services/firebase';
 import { ref, listAll } from 'firebase/storage'; 
 import { collection, getDocs, query } from 'firebase/firestore';
+import { Context } from '../context/Context';
 
 const albumsData = async () => {
   const albumsRef = ref(storage, 'eventos');
@@ -27,8 +28,8 @@ const albumsData = async () => {
 
 const FetchAlbums = () => {
   const [albums, setAlbums] = useState<string[]>([]);
-  const [albumCovers, setAlbumCovers] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
+  const { setAlbumCovers } = useContext(Context);
 
   useEffect(() => {
     async function loadAlbums() {
@@ -45,7 +46,7 @@ const FetchAlbums = () => {
     loadAlbums();
   }, []);
 
-  return { albums, albumCovers, loading };
+  return { albums, loading };
 };
 
 export default FetchAlbums;

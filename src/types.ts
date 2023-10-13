@@ -20,3 +20,8 @@ export interface AlbumData {
   name: string;
   coverUrl: string;
 }
+
+export type Album = {
+  nome: string;
+  url: string;
+};
