@@ -9,7 +9,7 @@ export function useFilters(albums: imgProps[]) {
   const applyFilter = useCallback(() => {
     let filtered = albums;
 
-    // Filtrar por data
+    // Filtrar por data,
     if (filterDate) {
       filtered = filtered.filter((album) => album.exifData.data === filterDate);
     }
