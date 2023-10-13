@@ -1,6 +1,7 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { database, storage } from '../services/firebase';
 import { ref, listAll, getDownloadURL } from 'firebase/storage';
+import { ExifData } from '../types';
 
 export async function fetchImagesByAlbum(albumId: string | undefined) {
   if (!albumId) {
@@ -23,9 +24,14 @@ export async function fetchImagesByAlbum(albumId: string | undefined) {
         );
         const exifSnapshot = await getDocs(firestoreQuery);
 
-        let exifData = {};
+        let exifData = {
+          data: '',
+          imageName: '',
+          albumName: '',
+          horario: '',
+        } as ExifData;
         exifSnapshot.forEach((doc) => {
-          exifData = doc.data();
+          exifData = doc.data() as ExifData;
         });
 
         return { nome, fullPath, url, exifData };

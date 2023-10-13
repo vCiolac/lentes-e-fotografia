@@ -1,4 +1,3 @@
-import React from 'react';
 import headersvg from '../../assets/header.svg'
 
 function Header() {
