@@ -16,20 +16,9 @@ export function useFilters(albums: imgProps[]) {
 
     // Filtrar por faixa de horário
     if (filterTimeRange) {
-      filtered = filtered.filter((album) => {
-        const time = album.exifData.horario;
-        const [filterStart, filterEnd] = filterTimeRange.split('~');
-        const [filterStartHour, filterStartMinute] = filterStart.split(':');
-        const [filterEndHour, filterEndMinute] = filterEnd.split(':');
-        const [hour, minute] = time.split(':');
-
-        const filterStartTimeInSeconds = parseInt(filterStartHour) * 3600 + parseInt(filterStartMinute) * 60;
-        const filterEndTimeInSeconds = parseInt(filterEndHour) * 3600 + parseInt(filterEndMinute) * 60;
-        const timeInSeconds = parseInt(hour) * 3600 + parseInt(minute) * 60;
-
-        return timeInSeconds >= filterStartTimeInSeconds && timeInSeconds < filterEndTimeInSeconds;
-      });
+      filtered = filtered.filter((album) => album.exifData.horario === filterTimeRange);
     }
+    
     setFilteredAlbums(filtered);
   }, [albums, filterDate, filterTimeRange]);
 
