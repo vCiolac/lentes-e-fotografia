@@ -9,6 +9,9 @@ export default {
       fontFamily: {
         'open-sans': ['Open Sans', 'sans'],
       },
+      backgroundImage: {
+        'footer-texture': 'url("/src/assets/bg.jpg")',
+      }
     },
   },
   plugins: [],
