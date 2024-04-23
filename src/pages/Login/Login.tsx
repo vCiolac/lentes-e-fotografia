@@ -25,6 +25,16 @@ function Login() {
     );
   }
 
+  if (user && !user.uid === import.meta.env.VITE_REACT_APP_ADMIN_UID) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="p-4 border rounded shadow mb-4">
+          <h1 className="text-2xl font-semibold mb-4 text-center">Você não tem permissão para acessar esta página</h1>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="h-screen flex items-center justify-center">
       <div className="p-4 border rounded shadow mb-4">

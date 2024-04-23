@@ -67,9 +67,9 @@ function Events() {
   // }
 
   const allTimeRanges = albums
-  .map((album) => album.exifData.horario)
-  .filter((horario) => horario !== '')
-  .sort();
+    .map((album) => album.exifData.horario)
+    .filter((horario) => horario !== '')
+    .sort();
 
   // const allTimeRanges = new Set(albums
   //   .map((album) => album.exifData.horario)
@@ -104,10 +104,15 @@ function Events() {
       </header>
       {user && user.uid === import.meta.env.VITE_REACT_APP_ADMIN_UID && (
         <div className='flex flex-col'>
-          <span className="text-black text-base font-semibold mt-1 max-md:max-w-full">
-            Bem-vindo administrador.
-          </span>
-          <button onClick={handleOpenCoverSelection}>Trocar Capa do Álbum</button>
+          <div className="flex justify-center m-2">
+            <span className="text-black text-base font-semibold mt-1 max-md:max-w-full">
+              Bem-vindo administrador.
+            </span>
+          </div>
+          <button onClick={handleOpenCoverSelection}
+            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 p-2 border-gray-400 border-2">
+            Trocar Capa do Álbum
+          </button>
           {isCoverSelectionOpen && (
             <div>
               <select value={selectedCover} onChange={handleCoverSelection}>
@@ -191,10 +196,15 @@ function Events() {
         ))}
       </ul>
       {message && <Notification message={message} />}
-      <footer className={`bg-[#3091A8] h-10 w-full ${filteredAlbums.length === 0 ? 'absolute' : 'relative'} bottom-0 flex items-center justify-end`}>
-        <Link to="/login" className="">
-          <img src={GoogleIcon} alt="Google Icon" width="20" className='mr-2' />
-        </Link>
+      <footer className={`bg-[#333E42]  ${filteredAlbums.length === 0 ? 'absolute' : 'relative'} h-8 w-full relative bottom-0 flex items-center justify-center text-white`}>
+        <div className="flex items-center justify-center space-x-6">
+          <span className="text-xs">COPYRIGHT © 2024 Victor Ciolac. TODOS OS DIREITOS RESERVADOS.</span>
+          <span className="text-xs">|</span>
+          <Link to="/login" className="flex items-center text-xs">
+            <img src={GoogleIcon} alt="Google Icon" width="20" className="mr-2" />
+            LOGIN
+          </Link>
+        </div>
       </footer>
     </main >
   );

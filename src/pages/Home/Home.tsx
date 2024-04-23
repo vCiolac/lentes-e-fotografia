@@ -9,7 +9,7 @@ import GoogleIcon from '../../assets/google.svg';
 
 function Home() {
   const { albums, loading } = FetchAlbums();
-  const { albumCovers } = useContext(Context);
+  const { albumCovers, user } = useContext(Context);
 
   return (
     <div>
@@ -21,7 +21,7 @@ function Home() {
           <LoadingSpinner msg='Carregando...' />
         ) : (
           <div>
-            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-10 justify-items-center mx-1">
+            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 justify-items-center mx-1">
               {albums.map((albumName) => (
                 <li key={albumName} className="bg-white p-2 rounded shadow w-full relative group">
                   {/* <li key={albumName} className="bg-white p-2 rounded shadow w-[22rem] md:w-96 relative group"> */}
@@ -47,10 +47,15 @@ function Home() {
           </div>
         )}
       </div>
-      <footer className={`bg-[#3091A8] h-10 w-full ${loading ? 'absolute' : 'relative'} bottom-0 flex items-center justify-end`}>
-        <Link to="/login" className="">
-          <img src={GoogleIcon} alt="Google Icon" width="20" className='mr-2' />
-        </Link>
+      <footer className={`bg-[#333E42] ${loading ? 'absolute' : 'relative'} h-8 w-full relative bottom-0 flex items-center justify-center text-white`}>
+        <div className="flex items-center justify-center space-x-6">
+          <span className="text-xs">COPYRIGHT © 2024 Victor Ciolac. TODOS OS DIREITOS RESERVADOS.</span>
+          <span className="text-xs">|</span>
+          <Link to="/login" className="flex items-center text-xs">
+            <img src={GoogleIcon} alt="Google Icon" width="20" className="mr-2" />
+            {user && user.uid ? 'ADMIN' : 'LOGIN'}
+          </Link>
+        </div>
       </footer>
     </div>
   );

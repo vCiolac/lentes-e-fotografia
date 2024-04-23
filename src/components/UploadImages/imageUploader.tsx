@@ -97,16 +97,15 @@ const UploadImageForm = () => {
   return (
     <div className="bg-white p-6 rounded shadow-md">
       <form className="grid mb-6 justify-items-center">
-        <h3 className="text-2xl font-semibold mb-4 text-center">Adicionar Arquivos</h3>
+        <h3 className="text-2xl font-semibold mb-4 text-center tracking-wide border-gray-400 border-b-2">Adicionar imagens e albuns</h3>
         <button
           onClick={handleCreateAlbum}
-          className="bg-[#3091A8] hover:bg-[#286474] text-white font-semibold py-1 px-4 rounded-full"
-        >
-          {isCreatingAlbum ? "Usar evento existente" : "Criar novo evento"}
+          className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 p-2 border-gray-400 border-2">
+          {isCreatingAlbum ? "Usar album existente" : "Criar novo album"}
         </button>
         {isCreatingAlbum ? (
           <label className="block mt-4 text-center">
-            Nome do evento:
+            Nome do album:
             <input
               type="text"
               value={albumName}
@@ -122,7 +121,7 @@ const UploadImageForm = () => {
               onChange={handleUseExistingAlbum}
               className="bg-transparent border rounded border-gray-400 w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
             >
-              <option value="">Selecione um evento existente</option>
+              <option value="">Selecione um album existente</option>
               {albums.map((album) => (
                 <option key={album} value={album}>
                   {album}
@@ -140,42 +139,47 @@ const UploadImageForm = () => {
         style={{ display: 'none' }}
         id="file-input"
       />
-      <label
-        htmlFor="file-input"
-        className="cursor-pointer bg-[#6a4d91] hover:bg-[#402c5a] text-white font-semibold py-2 px-4 rounded-full block w-max mx-auto"
-      >
-        Selecionar Imagens
-      </label>
-      <button
-        onClick={clearAll}
-        className="mt-4 bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-full block w-max mx-auto"
-      >
-        Limpar
-      </button>
+      <div className="flex justify-center">
+        <label
+          htmlFor="file-input"
+          className="block uppercase tracking-wide text-gray-700  bg-sky-500 hover:bg-sky-600 text-xs font-bold mb-2 p-2 border-gray-400 border-2">
+          Selecionar Imagens
+        </label>
+      </div>
       {filesForUpload.length > 0 && (
         <div className="flex justify-center">
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold mb-2">Imagens Selecionadas</h3>
-          <ul className="list-disc pl-6">
-            {filesForUpload.map((file, index) => (
-              <li key={index}>{file.name}</li>
-            ))}
-          </ul>
-        </div>
+          <div className="mt-4">
+            <h3 className="text-lg font-semibold mb-2">Imagens Selecionadas</h3>
+            <ul className="list-disc pl-6">
+              {filesForUpload.map((file, index) => (
+                <li key={index}>{file.name}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       )}
-      <button onClick={handleButtonUpload} className="mt-4 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full block w-max mx-auto">
-        Enviar Imagens
-      </button>
+      <div className="flex justify-center">
+        <button onClick={handleButtonUpload} className="block uppercase tracking-wide text-gray-700 bg-green-500 hover:bg-green-600 text-xs font-bold mb-2 p-2 border-gray-400 border-2">
+          Enviar Imagens
+        </button>
+      </div>
+      <div className="flex justify-center">
+        <button
+          onClick={clearAll}
+          className="block uppercase tracking-wide text-gray-700 bg-red-500 hover:bg-red-600 text-xs font-bold mb-2 p-2 border-gray-400 border-2">
+          Limpar
+        </button>
+      </div>
       <Link to={`/`}>
         <div className="flex justify-center">
-          <button className="bg-gray-500 hover:bg-gray-600 text-white mt-4 font-semibold py-2 px-4 rounded-full">
+          <button
+            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 p-2 border-gray-400 border-2">
             Voltar para a página inicial
           </button>
         </div>
       </Link>
       {isUploading && (
-          <LoadingSpinner msg='Enviando imagens para o servidor...'/>
+        <LoadingSpinner msg='Enviando imagens para o servidor...' />
       )}
       {message && <Notification message={message} />}
       <CompressImg files={filesForCompress} onCompressed={handleCompressedFiles} />
