@@ -1,9 +1,10 @@
 import { createContext } from 'react';
 import { User } from 'firebase/auth';
+import { UserFire } from '../types';
 
 
 export type ContextType = {
-  user: User | null;
+  user: UserFire | User | null;
   setUser: React.Dispatch<React.SetStateAction<User>>;
   message: string;
   showNotification: React.Dispatch<React.SetStateAction<string>>;
