@@ -9,6 +9,9 @@ import { formatAlbumName } from '../../hooks/handleAlbumName';
 import { Album } from '../../types';
 import LoadingSpinner from '../../components/Loading/Loading';
 import GoogleIcon from '../../assets/google.svg';
+import { collection, addDoc } from 'firebase/firestore';
+import { database } from '../../services/firebase';
+import StarRating from '../../components/Rating/Rating';
 
 function Events() {
   const { albumname } = useParams();
@@ -56,26 +59,10 @@ function Events() {
     .filter((date) => date !== '')
   ));
 
-  // function generateTimeRanges() {
-  //   const timeRanges = [];
-  //   for (let hour = 0; hour < 24; hour++) {
-  //     const startHour = `${hour.toString().padStart(2, '0')}:00:00`;
-  //     const endHour = `${(hour + 1).toString().padStart(2, '0')}:00:00`;
-  //     timeRanges.push(`${startHour}~${endHour}`);
-  //   }
-  //   return timeRanges;
-  // }
-
   const allTimeRanges = albums
     .map((album) => album.exifData.horario)
     .filter((horario) => horario !== '')
     .sort();
-
-  // const allTimeRanges = new Set(albums
-  //   .map((album) => album.exifData.horario)
-  //   .filter((horario) => horario !== '')
-  //   .sort();
-  // );
 
   const tittle = albumname ? formatAlbumName(albumname) : '';
   const eventCover = () => {
@@ -84,8 +71,43 @@ function Events() {
         return albumCovers[albumname]
       }
     }
-  }
+  };
   const headerImg = eventCover();
+
+  const displayLoginName = () => {
+    let text = "LOGIN";
+    if (user) {
+      if (Object.keys(user).length !== 0) {
+        text = "MINHA CONTA";
+        if (user.uid === import.meta.env.VITE_REACT_APP_ADMIN_UID) {
+          text = "ADMINISTRADOR";
+        }
+      }
+    }
+    return text;
+  };
+
+  const handleFavoriteButton = async () => {
+    if (selectedImages.length === 0) {
+      showNotification('Nenhuma imagem selecionada!');
+      return;
+    }
+    try {
+      if (user) {
+        const favoritesRef = collection(database, "favorites");
+        await addDoc(favoritesRef, {
+          userId: user.uid,
+          images: selectedImages.map(image => image.url)
+        });
+        showNotification('Imagens favoritadas com sucesso!');
+        setSelectedImages([]);
+      }
+    } catch (error) {
+      console.error(error);
+      showNotification('É preciso fazer login para salvar as imagens no favoritos.');
+      setSelectedImages([]);
+    }
+  };
 
   return (
     <main className='w-full'>
@@ -129,17 +151,14 @@ function Events() {
         </div>
       )}
       <div className='mt-6 ml-6'>
-        <span className='text-black text-base font-semibold'>
-          Descrição sobre como achar o horário de quando as fotos foram tiradas.
-        </span>
         <div className="flex flex-row flex-wrap content-center max-md:justify-center align-middle my-6 w-full">
           <div>
-            <label htmlFor="filterDate" className="text-[#535353] font-open-sans mr-2">
+            <label htmlFor="filterDate" className="text-[#535353] font-open-sans block text-center">
               Dia:
             </label>
             <select
               id="filterDate"
-              className="md:pl-1 md:pr-5 border border-gray-500 rounded py-1 text-gray-700 focus:outline-none md:mr-6"
+              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 p-2 border-gray-400 border-2"
               value={filterDate}
               onChange={(e) => setFilterDate(e.target.value)}
             >
@@ -151,15 +170,15 @@ function Events() {
               ))}
             </select>
           </div>
-          <div>
-            <label htmlFor="filterTimeRange" className="text-[#535353] font-open-sans mr-2">
+          <div className='ml-2'>
+            <label htmlFor="filterTimeRange" className="text-[#535353] font-open-sans block text-center">
               Horário:
             </label>
             <select
               id="filterTimeRange"
               value={filterTimeRange}
               onChange={(e) => setFilterTimeRange(e.target.value)}
-              className="pl-1 border border-gray-500 rounded py-1 text-gray-700 focus:outline-none mt-2 md:mt-0"
+              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 p-2 border-gray-400 border-2"
             >
               <option value="">Filtrar por hora</option>
               {allTimeRanges.map((timeRange) => (
@@ -170,11 +189,18 @@ function Events() {
             </select>
           </div>
         </div>
-        <div className="flex flex-col md:relative md:right-36 md:flex-row md:space-x-6 md:ml-1 mt-3 md:mt-0 justify-between md:justify-start flex-wrap pt-2 md:pt-0 pr-4">
-          {/* <button className="bg-[#3FB8DE] hover:bg-[#45889e] rounded-lg px-3 py-1 shadow font-opens-sans" onClick={applyFilter}>Aplicar Filtro</button> */}
-          {/* <button className="bg-red-400 hover:bg-red-500 rounded-lg px-3 py-1 shadow font-opens-sans" onClick={clearFilters}>Limpar Filtros</button> */}
-        </div>
       </div>
+      {selectedImages.length > 0 && (
+        <div className="bg-gray-100 p-4 mb-4 flex justify-center">
+          <button
+            disabled={selectedImages.length === 0}
+            onClick={() => handleFavoriteButton()}
+            className={`block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 p-2 border-gray-400 border-2 ${selectedImages.length === 0 ? 'cursor-not-allowed opacity-50' : ''}`}
+          >
+            Favoritar {selectedImages.length} imagem(ns) selecionada(s).
+          </button>
+        </div>
+      )}
       {filteredAlbums.length === 0 && <LoadingSpinner msg='Carregando imagens...' />}
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mb-10 justify-items-center mx-10">
         {filteredAlbums.map((album) => (
@@ -192,17 +218,18 @@ function Events() {
                 {album.exifData.data}
               </span>
             </div>
+            {user && <StarRating imageId={album.nome} />}
           </li>
         ))}
       </ul>
       {message && <Notification message={message} />}
-      <footer className={`bg-[#333E42]  ${filteredAlbums.length === 0 ? 'absolute' : 'relative'} h-8 w-full relative bottom-0 flex items-center justify-center text-white`}>
+      <footer className={`bg-[#333E42]  ${filteredAlbums.length === 0 ? 'absolute' : 'relative'} h-8 w-full bottom-0 flex items-center justify-center text-white`}>
         <div className="flex items-center justify-center space-x-6">
           <span className="text-xs">COPYRIGHT © 2024 Victor Ciolac. TODOS OS DIREITOS RESERVADOS.</span>
           <span className="text-xs">|</span>
           <Link to="/login" className="flex items-center text-xs">
             <img src={GoogleIcon} alt="Google Icon" width="20" className="mr-2" />
-            LOGIN
+            {displayLoginName()}
           </Link>
         </div>
       </footer>
