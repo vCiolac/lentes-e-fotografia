@@ -1,20 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { collection, addDoc, query, where, onSnapshot } from 'firebase/firestore';
 import { database } from '../../services/firebase';
-import { User } from 'firebase/auth';
-import { UserFire } from '../../types';
 import { Context } from '../../context/Context';
 
 interface StarRatingProps {
-  user: User | UserFire | null;
   imageId: string;
 }
 
 const StarRating: React.FC<StarRatingProps> = ({ imageId }) => {
   const { showNotification, user } = useContext(Context);
-  const [rating, setRating] = useState(0);
+  const [, setRating] = useState(0);
   const [hasUserRated, setHasUserRated] = useState(false);
-  const [totalRatings, setTotalRatings] = useState(0);
+  const [, setTotalRatings] = useState(0);
   const [avgRating, setAvgRating] = useState(0);
 
   useEffect(() => {
