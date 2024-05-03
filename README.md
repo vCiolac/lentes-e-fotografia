@@ -7,7 +7,7 @@ Bem-vindo ao meu projeto de portfolio online para fotógrafos! Esta plataforma p
 - Exibição de portfólio de fotografia profissional.
 - Navegação por álbuns de fotos.
 - Favoritar e avaliar imagens.
-- Extração de metadados das imagens, incluindo data e hora de captura, utilizando o EXIF.
+- Extração de metadados das imagens, como data e hora de captura, utilizando o EXIF.
 - Painel de administração para upload de novas fotos e gerenciamento de conteúdo.
 
 ## Tecnologias Utilizadas
