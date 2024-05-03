@@ -5,24 +5,11 @@ import { formatAlbumName } from '../../hooks/handleAlbumName';
 import LoadingSpinner from '../../components/Loading/Loading';
 import { Context } from '../../context/Context';
 import { Link } from 'react-router-dom';
-import GoogleIcon from '../../assets/google.svg';
+import Footer from '../../components/Footer/Footer';
 
 function Home() {
   const { albums, loading } = FetchAlbums();
-  const { albumCovers, user } = useContext(Context);
-
-  const displayLoginName = () => {
-    let text = "LOGIN";
-    if (user) {
-      if (Object.keys(user).length !== 0) {
-        text = "MINHA CONTA";
-        if (user.uid === import.meta.env.VITE_REACT_APP_ADMIN_UID) {
-          text = "ADMINISTRADOR";
-        }
-      }
-    }
-    return text;
-  }
+  const { albumCovers } = useContext(Context);
 
   return (
     <div>
@@ -58,16 +45,7 @@ function Home() {
           </div>
         )}
       </div>
-      <footer className={`bg-[#333E42] ${loading ? 'absolute' : 'relative'} h-8 w-full bottom-0 flex items-center justify-center text-white`}>
-        <div className="flex items-center justify-center space-x-6">
-          <span className="text-xs">COPYRIGHT © 2024 Victor Ciolac. TODOS OS DIREITOS RESERVADOS.</span>
-          <span className="text-xs">|</span>
-          <Link to="/login" className="flex items-center text-xs">
-            <img src={GoogleIcon} alt="Google Icon" width="20" className="mr-2" />
-            {displayLoginName()}
-          </Link>
-        </div>
-      </footer>
+      <Footer loading={loading} />
     </div>
   );
 }

@@ -53,6 +53,7 @@ const UploadImageForm = () => {
     if (isCreatingAlbum && albumName.length < 1) {
       return showNotification('Escolha um evento disponível!');
     }
+    setIsUploading(true);
     handleMetadados(filesForUpload);
     handleStartUpload(filesForUpload);
   };

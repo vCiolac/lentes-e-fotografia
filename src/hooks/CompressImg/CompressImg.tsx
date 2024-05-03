@@ -23,9 +23,9 @@ const CompressImg: React.FC<CompressImgProps> = ({ files, onCompressed }) => {
     // Realiza a compressão para cada arquivo
     files.forEach((file) => {
       new Compressor(file, {
-        quality: 0.8, // Configuração de qualidade
-        maxWidth: 640, // Largura máxima
-        maxHeight: 480, // Altura máxima
+        quality: 1, // Configuração de qualidade
+        maxWidth: 1024, // Largura máxima
+        maxHeight: 768, // Altura máxima
         success: handleCompression, // Função a ser chamada após a compressão
         error: (err) => console.error(err.message),
       });
