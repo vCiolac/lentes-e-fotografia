@@ -7,7 +7,6 @@ const uploadImages = async (compressedFiles: File[], albumName: string): Promise
     const storageRef = ref(storage, storagePath);
 
     try {
-      // Fazer upload da imagem para o Firebase Storage
       await uploadBytes(storageRef, file);
       console.log('Imagem enviada com sucesso para', storagePath);
     } catch (error) {

@@ -19,7 +19,6 @@ const saveExifData = async (tags: number | undefined, imageName: string, aName: 
     }
     const albumName = `eventos/${aName}/`;
 
-    // Crie um documento no Firestore para armazenar as informações EXIF associadas ao ID da imagem
     const docRef = await addDoc(exifCollection, {
       imageName,
       albumName,
@@ -28,7 +27,7 @@ const saveExifData = async (tags: number | undefined, imageName: string, aName: 
     });
 
     console.log(`Informações EXIF salvas com sucesso para a imagem com ID ${imageName}`);
-    console.log(`Referência do documento: ${docRef.id}`); // Fix for Problem 1
+    console.log(`Referência do documento: ${docRef.id}`);
   } catch (error) {
     console.error('Erro ao salvar informações EXIF: ', error);
   }
